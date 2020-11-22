@@ -1,0 +1,171 @@
+rina.karnauch
+
+
+
+
+=============================
+=      File description     =
+=============================
+PART A: Storage and Spaceships
+------------------------------
+Storage.java - an abstract class which holds the different types of storages in a spaceship.
+Locker.java - a sub-storage class of kind "locker".
+LockerTest.java - test class for the Locker class.
+LongTermStorage.java - a sub-storage class of kind "Long Term Storage".
+LongTestTest.java - test class of the LongTermStorage class.
+Spaceship.java - class of object "Spaceship", which contains a crew, some lockers for them and a long term storage unit.
+SpaceshipTest.java - class of tests for the creations of spaceship.
+SpaceshipDepository.java - suite class to organize all tests together.
+PART B: Hotels and Sorting
+------------------------------
+BoopingSite.java - a class that represents an object of BoopingSite, the site we construct for booping hotels.
+BoopingSiteTest.java - class of tests for object type "BoopingSite"
+SortByCity.java - a sorting object which implements a comparator for hotel type objects by ordering them by their city
+                   name.
+SortByRating.java - a sorting object which implements a comparator for hotel type objects by ordering them by their star
+                    value, and if the star rating is equal between two objects, their order
+                    is determined by the alphabetic comparison of the hotels(the object type) property name.
+SortByProximity.java - a sorting object which implements a comparator for hotel type objects by ordering them by their
+                       Proximity from a given coordinate, and if the proximity is equal between two objects,
+                       their order is determined by their POI value, in decreasing order.
+
+
+=============================
+=          Design           =
+=============================
+PART A: Storage and Spaceships
+------------------------------
+I decided to implement Spaceship,LongTermStorage and Locker as a classes, while Storage is an abstract class which holds
+the classes "Locker" and "LongTermStorage" because they are different type of abstract storages, and share some methods
+which are common for them both, yet hold different storing methods and some functions are implemented differently.
+i shall explain why i decided to implement them the way i did:
+QUESTION ONE & TWO - SECTION C- IMPLEMENTING STORAGE: HOW DID YOU DO IT AND WHY:
+-------------------------------------------------------------------------
+I chose to implement those as classes and not interfaces because they hold the implementations themselves and not only
+the abilities the objects have, and do not represent a "contract" or method.
+Also i decided to create an abstract class "Storage" for the long run- if spaceships will get upgraded and hold
+new kind of storages added to lockers and long term storages, for example- "Bag" or "Technical Storage Room".
+
+PART B: Hotels and Sorting
+------------------------------
+QUESTION ONE & TWO - SECTION C- IMPLEMENTING HOTELS: HOW DID YOU DO IT AND WHY:
+------------------------------------------------------------------------------
+I decided to implement boopingSite as a class, although it represents abilities of the site itself- sorting by given
+wanted conditions, for the site to work we need to implement the actions themselves, and the object might contain
+several  objects of its kind- depends on the given hotel file- we can say that each file constructs a new kind of
+boopingSite therefore it was more intuitive for me to implement it as a class.
+In addition to the boopingSite and it's methods, we needed to sort the hotels given to us by conditions and orders-
+i shall explain why i decided to implement sorting classes- which implement abilities of a comparator.
+QUESTION ONE & TWO - SECTION B & C- IMPLEMENTING HOTELS: HOW DID YOU DO IT AND WHY:
+------------------------------------------------------------------------------
+I implemented 3 different objects to sort by, which each kind of those implements a comparator of "Hotel"
+object which allows us to sort by a different condition- the comparator interface allows us to implement
+sorting and comparing by a "given contract", and each one of the classes which implements from the Comparator<Hotel>
+is given a specification of how to compare- the Comparator is an interface because it allows us to specify how we must
+sort by a given condition and not how, and we created the object that implement the comparator's needs.
+WHY ONE OVER ANOTHER:
+---------------------
+I decided to implement a comparator and not a comparable because a comparator provide us multiple sorting methods-
+and not by only one kind of sorting- we wanted to compare by 2 methods, and i added a third one for myself.
+Implementing a comparator doesn't affect our class, when comparable will affect our class if implemented- we
+don't want to change our class.
+Also i needed to implement one of them at least because i wanted to use the collections(arrays) sort methods, instead
+of implementing a sort, when i know i have one in the java libraries already, to avoid bugs or unnecessary code lines.
+
+
+
+
+=============================
+=  Implementation details   =
+=============================
+PART A: Storage and Spaceships
+------------------------------
+Each object is a class, there for we have fields according to our needs, which all of them are private and contain
+our needed information.
+Spaceship
+-----------------
+Holds an array of lockers, not available for changing amount of lockers after creating a spaceship. The lockers
+of the spaceships are an array of Locker objects because arrays size can not be changed after initialization, and amount
+of lockers is limited.
+We hold constrains for lockers in our spaceship which are constrains for each locker created in our spaceship, and is
+given to us by our ItemFactory.
+Also, we hold an array of crewIDs, which we know can not be changed therefore we implement it as an array- not resizeable.
+We also hold an array of locker holders- first locker is owned by the id in the locker Holders array- because size is
+unchangeable as well.
+Storage
+-----------------
+An abstract class to represent storage types in our spaceships, holds the common methods for locker and long term storage
+such add addItem(which is different in each class), getCapacity which is different as well and getAvailableCapacity which
+is also common yet handled differently and getInventory because our maps holds different values.
+All the methods above are abstract because there are several ways to implement the classes, yet we can't conclude if others
+implemented it with the same fields i did.
+Yet we hold a common method which is getItemCount which by the help of getInventory, let us get the count fastly- we also
+know by the API that indeed this function exists so we can use it here.
+Locker
+-----------------
+Represents a locker object, with the given restrictions in the exercise.
+The locker holds several fields which help us to manage it such as capacity which is unchangeable, a map of items and
+their amounts according to the current locker state(fast dataset i decided to use because of runtime and because it is
+easy to go through items, and it is easy to check weather we have a constricted item, with no need to go through
+all items and their amounts). The locker is also owned by a member crew in our spaceship construction,
+but it has no actual use in our locker class, it is set in our Spaceship class.
+Also the locker is connected(by a field) to the long term storage of a spaceship it is inside, and according to the
+insertion amounts to the locker we can move items to the long term storage to make it less crowded.
+Long Term Storage
+-----------------
+Represents the long term storage of a spaceship, which capacity is always 1000 at most and has
+no restrictions. The capacity limit is checked by a field of capacity and by each insertion we check with
+the field unoccupied items weather we can add items or we can not.
+Here also, the items are ordered by a map- which is fast and easy to use and modify.
+Long Term Storage has no constrictions but the capacity limit itself, therefore we have less fields.
+Tests
+-----
+Each class holds a test, in each test we create a wanted object and check its limits and restrictions with several test
+or a one big common test afterwards.
+Each test states by its signature what it checks, and big tests are with the name "test***" which *** represents a
+method in that class that we check- with different manipulations inside, and not only one like other little specific
+tests.
+
+PART B: Hotels and Sorting
+------------------------------
+BoopingSite
+----------
+BoopingSite holds a dataset(array) of hotels, which we are given thanks to the searchEngine.
+We hold limits for our coordinates as fields, and map of our cities just in case we need to check if a city exists.
+Also we hold the name of the file we conduct information from.
+The array is chosen because searchEngine given to us gives us the hotels information as an array, and also is easy to
+sort it out with our implemented comparator- which will be talked about in a bit.
+I decided to have a cityMap to avoid problems with un given cities to our sorting system ahead, instead of searching
+and wasting runtime, also it provides us the amount of hotels in each city which allows us to know how many hotels
+we need to sort if we sort by hotels in a specific city.
+Used by BoopingSite for having a map of cities, and hold their amounts.
+SortByCity
+----------
+A sorting object for a comparator interface, which implements the ability of the comparator for Hotel objects to sort
+datasets of Hotels by city name- a comparator which compares by the field of Hotel.City (by a string comparator).
+SortByRating
+----------
+A sorting object for a comparator interface, which implements the ability of the comparator for Hotel objects to sort
+datasets of Hotels by Star Ratings, and if the star ratings are equal we sort them by alphabetic order(by a string
+comparator).
+Used by BoopingSite for sorting hotels by ratings.
+SortByProximity
+----------
+A sorting object for a comparator interface, which implements the ability of comparator for Hotel objects to sort
+datasets of Hotels by distance of a given coordinate on earth.
+The sorting object is initialized with the given wanted coordinate(latitude and longitude) to check distance from,
+and is sorting Hotel objects according to their euclidean distance from the given coordinate- if the distances are the
+same we sort by an alphabetic order.
+Tests
+-----
+I decided to test out each sort by sections- test for each file: first file, empty file(second file) and big file.
+Each file is checked weather the sorting are in the needed order or weather an empty array is returned for illegal
+values or empty files(usually second file, no need to go through anything with a loop in there, because empty or illegal).
+Everything is in one test and all test have in their signature the given file kind(empty, file1 or bigfile), and usually
+test the same thing- with some difference in coordinates.
+I also tested different pairs of illegal or legal permutations given to the BoopingSite methods, for example- legal city
+with one legal latitude and one illegal longitude, and other permutations.
+I also tested different kinds of illegal strings- my name, numeric strings or just empty string, which are not included
+in our files.
+
+
